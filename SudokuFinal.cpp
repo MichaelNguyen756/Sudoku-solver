@@ -1,6 +1,7 @@
 #include "Sudoku.h"
 
 int main(){
+	//Set up the borders drawn onto the console
 	Border smallBorder, bigBorder, blankContent, topBorder, bottomBorder;
 	
 	setBorder(smallBorder, VERTICALDOUBLELINECHAR, HORIZONTALLINECHAR, CENTRECHAR, VERTICALDOUBLELINECHAR, VERTICALDOUBLELINECHAR);
@@ -9,16 +10,19 @@ int main(){
 	setBorder(topBorder, TOPLEFTCORNERCHAR, HORIZONTALDOUBLELINECHAR, HORIZONTALDOUBLELINECHAR, TOPMIDDLECHAR, TOPRIGHTCORNERCHAR);
 	setBorder(bottomBorder, BOTTOMLEFTCORNERCHAR, HORIZONTALDOUBLELINECHAR, HORIZONTALDOUBLELINECHAR, BOTTOMMIDDLECHAR, BOTTOMRIGHTCORNERCHAR);
 	
+	//Initialise multi-dimensional arrays
 	DoubleIntArrPointer *possibleResult;
 	possibleResult = new DoubleIntArrPointer[SIZE];
 	int finalSolution [SIZE][SIZE];
 	int possibleLength [SIZE][SIZE];
 	
+	//Put the given solution into the set array
 	setUpGiven(finalSolution);
 	setUpPossible(possibleResult);
 	setUpGivenPossibility(possibleResult, finalSolution, possibleLength);
 	setUpChecks(possibleResult, finalSolution, possibleLength);
 	
+	//Solve the puzzle
 	while(!isSolved(possibleLength)){
 		enterSequential(possibleResult, finalSolution, possibleLength);
 		
@@ -34,6 +38,7 @@ int main(){
 		}
 	}
 	
+	//Draw the solution from the solution array
 	for (int bigVerBox = 0; bigVerBox < VERBOX; bigVerBox++){
 		for (int smallVerBox = 0; smallVerBox < VERBOX; smallVerBox++){
 			if(smallVerBox == 0){				
@@ -66,6 +71,7 @@ int main(){
 	drawBorder(bottomBorder);
 }
 
+//Methods (functions)
 void setBorder(Border &border, int firstBorder, int content, int innerBorder, int secondBorder, int endBorder){
 	border.firstBorder = (char) firstBorder;
 	border.content = (char) content;
@@ -231,19 +237,6 @@ void enterSequential(DoubleIntArrPointer *possible, int solution[SIZE][SIZE], in
 			}
 		}
 	}
-}
-
-bool isEqualArray(int arrayOne[SIZE][SIZE], int arrayTwo[SIZE][SIZE]){
-	int i, j;
-	for(i = 0; i < SIZE; i++){
-		for(j = 0; j < SIZE; j++){
-			if(arrayOne[i][j] != arrayTwo[i][j]){
-				return false;
-			}
-		}
-	}
-	
-	return true;
 }
 
 bool isSolved(int arrayLength[SIZE][SIZE]){
